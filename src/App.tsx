@@ -1,26 +1,38 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import { fetchApi } from './utils/api';
+import Card from './components/Card/Card.component';
+import Attribution from './components/Attribution/Attribution.component';
+import { GlobalStyle } from './styles/global';
 
-function App() {
+const App = () => {
+  const [advice, setAdvice] = useState({});
+  console.log(advice);
+
+  const fetchAdvice = async () => {
+    try {
+      const data = await fetchApi('https://api.adviceslip.com/advice');
+
+      if (data) {
+        return setAdvice(data);
+      }
+    } catch (error) {
+      return error;
+    }
+  };
+
+  useEffect(() => {
+    (async () => {
+      await fetchAdvice();
+    })();
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <GlobalStyle />
+      <Card />
+      <Attribution />
     </div>
   );
-}
+};
 
 export default App;
