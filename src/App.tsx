@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import AdviceProvider from './context/adviceContext';
 import { fetchApi } from './utils/api';
 import Card from './components/Card/Card.component';
 import Attribution from './components/Attribution/Attribution.component';
 import { GlobalStyle } from './styles/global';
+import { IAdvice } from './utils/interfaces';
+import { Main } from './App.styles';
 
 const App = () => {
-  const [advice, setAdvice] = useState({});
-  console.log(advice);
+  const [advice, setAdvice] = useState<IAdvice>();
 
   const fetchAdvice = async () => {
     try {
@@ -27,11 +29,13 @@ const App = () => {
   }, []);
 
   return (
-    <div className="App">
-      <GlobalStyle />
-      <Card />
-      <Attribution />
-    </div>
+    <AdviceProvider>
+      <Main>
+        <GlobalStyle />
+        <Card />
+        <Attribution />
+      </Main>
+    </AdviceProvider>
   );
 };
 
